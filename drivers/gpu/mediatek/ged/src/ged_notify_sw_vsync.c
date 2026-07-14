@@ -174,7 +174,6 @@ static void ged_notify_sw_sync_work_handle(struct work_struct *psWork)
 #ifdef ENABLE_COMMON_DVFS
 static unsigned long long hw_vsync_ts;
 #endif
-static unsigned long long g_ns_gpu_on_ts;
 static unsigned long long g_ns_gpu_off_ts;
 
 static bool g_timer_on;
@@ -456,6 +455,7 @@ bool ged_gpu_power_on_notified;
 bool ged_gpu_power_off_notified;
 void ged_dvfs_gpu_clock_switch_notify(bool bSwitch)
 {
+	int opp_idx = 0;
 
 	if (bSwitch) {
 		ged_gpu_power_on_notified = true;
@@ -464,20 +464,22 @@ void ged_dvfs_gpu_clock_switch_notify(bool bSwitch)
 
 #ifdef GED_DCS_POLICY
 		if (g_ns_gpu_on_ts - g_ns_gpu_off_ts > GED_DVFS_FB_TIMER_TIMEOUT)
-			dcs_restore_max_core_mask();
+			if (is_dcs_enable() &&
+				dcs_get_cur_core_num() < dcs_get_max_core_num) {
+					opp_idx = ged_get_min_oppidx_real();
+					ged_dvfs_gpu_freq_commit(opp_idx,
+						ged_get_freq_by_idx(opp_idx),
+						GED_DVFS_FB_FALLBACK_COMMIT);
+				}
 #endif /* GED_DCS_POLICY */
 
 		g_bGPUClock = true;
-		if (g_timer_on) {
-			ged_log_buf_print(ghLogBuf_DVFS,
-				"[GED_K] Timer Already Start");
-		} else {
-			hrtimer_start(&g_HT_hwvsync_emu,
+		ged_log_buf_print(ghLogBuf_DVFS, "[GED_K] Buck-on; Cancel timer");
+		hrtimer_cancel(&g_HT_hwvsync_emu);
+		hrtimer_start(&g_HT_hwvsync_emu,
 			ns_to_ktime(GED_DVFS_TIMER_TIMEOUT), HRTIMER_MODE_REL);
-			ged_log_buf_print(ghLogBuf_DVFS,
-				"[GED_K] HW Start Timer");
-			timer_switch(true);
-		}
+		ged_log_buf_print(ghLogBuf_DVFS, "[GED_K] Start timer");
+		timer_switch(true);
 		ged_log_perf_trace_counter("gpu_state",
 			1, 5566, 0, 0);
 	} else {
@@ -500,11 +502,13 @@ EXPORT_SYMBOL(ged_dvfs_gpu_clock_switch_notify);
 
 GED_ERROR ged_notify_sw_vsync_system_init(void)
 {
-	g_psNotifyWorkQueue = create_workqueue("ged_notify_sw_vsync");
-
-	if (g_psNotifyWorkQueue == NULL)
-		return GED_ERROR_OOM;
-
+	g_psNotifyWorkQueue = alloc_workqueue("ged_notify_sw_vsync", WQ_HIGHPRI | WQ_UX | WQ_UNBOUND, 0);
+	if (!g_psNotifyWorkQueue) {
+		pr_err("[GED] Failed to create ged_notify_sw_vsync_workqueue, will use system_highpri_wq\n");
+		g_psNotifyWorkQueue = create_workqueue("ged_notify_sw_vsync");
+	    if (g_psNotifyWorkQueue == NULL)
+		    return GED_ERROR_OOM;
+	}
 	mutex_init(&gsVsyncStampLock);
 	mutex_init(&gsVsyncModeLock);
 
@@ -513,7 +517,6 @@ GED_ERROR ged_notify_sw_vsync_system_init(void)
 
 	return GED_OK;
 }
-
 void ged_notify_sw_vsync_system_exit(void)
 {
 	if (g_psNotifyWorkQueue != NULL) {
