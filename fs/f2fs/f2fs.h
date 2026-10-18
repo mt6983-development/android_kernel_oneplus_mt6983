@@ -880,6 +880,7 @@ enum {
 	FI_ENABLE_COMPRESS,	/* enable compression in "user" compression mode */
 	FI_COMPRESS_RELEASED,	/* compressed blocks were released */
 	FI_ALIGNED_WRITE,	/* enable aligned write */
+	FI_OPENED_FILE,		/* indicate file has been opened */
 #ifdef CONFIG_F2FS_FS_DEDUP
 	/* use for dedup */
 	FI_DEDUPED,
