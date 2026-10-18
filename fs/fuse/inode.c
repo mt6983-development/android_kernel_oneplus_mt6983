@@ -311,6 +311,7 @@ static int fuse_inode_set(struct inode *inode, void *_nodeidp)
 	return 0;
 }
 
+
 struct inode *fuse_iget(struct super_block *sb, u64 nodeid,
 			int generation, struct fuse_attr *attr,
 			u64 attr_valid, u64 attr_version)
@@ -631,6 +632,7 @@ static int fuse_parse_param(struct fs_context *fsc, struct fs_parameter *param)
 			return invalfc(fsc, "blksize only supported for fuseblk");
 		ctx->blksize = result.uint_32;
 		break;
+
 
 	default:
 		return -EINVAL;

@@ -1971,6 +1971,7 @@ static ssize_t fuse_dev_do_write(struct fuse_dev *fud,
 		}
 	}
 
+
 	spin_lock(&fpq->lock);
 	clear_bit(FR_LOCKED, &req->flags);
 	if (!fpq->connected)
