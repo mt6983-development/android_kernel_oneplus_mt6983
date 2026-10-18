@@ -27,19 +27,3 @@ kvm-y := $(KVM)/kvm_main.o $(KVM)/coalesced_mmio.o $(KVM)/eventfd.o \
 kvm-$(CONFIG_HW_PERF_EVENTS)  += pmu-emul.o
 # Work around a false positive Clang 22 -Wuninitialized-const-pointer warning
 CFLAGS_sys_regs.o := $(call cc-disable-warning, uninitialized-const-pointer)
-
-always-y := hyp_constants.h hyp-constants.s
-
-define rule_gen_hyp_constants
-	$(call filechk,offsets,__HYP_CONSTANTS_H__)
-endef
-
-CFLAGS_hyp-constants.o = -I $(srctree)/$(src)/hyp/include -D__KVM_NVHE_HYPERVISOR__=1
-$(obj)/hyp-constants.s: $(src)/hyp/hyp-constants.c FORCE
-	$(call if_changed_dep,cc_s_c)
-
-$(obj)/hyp_constants.h: $(obj)/hyp-constants.s FORCE
-	$(call if_changed_rule,gen_hyp_constants)
-
-obj-kvm := $(addprefix $(obj)/, $(kvm-y))
-$(obj-kvm): $(obj)/hyp_constants.h
