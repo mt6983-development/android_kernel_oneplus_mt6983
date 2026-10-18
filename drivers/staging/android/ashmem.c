@@ -813,9 +813,23 @@ out_unlock:
 	return ret;
 }
 
+static int get_file_id(struct ashmem_area *asma, unsigned long *ino_ptr)
+{
+	/* Lock around our check to avoid racing with ashmem_mmap(). */
+	mutex_lock(&ashmem_mutex);
+	if (!asma->file) {
+		mutex_unlock(&ashmem_mutex);
+		return -EINVAL;
+	}
+	*ino_ptr = file_inode(asma->file)->i_ino;
+	mutex_unlock(&ashmem_mutex);
+	return 0;
+}
+
 static long ashmem_ioctl(struct file *file, unsigned int cmd, unsigned long arg)
 {
 	struct ashmem_area *asma = file->private_data;
+	unsigned long ino;
 	long ret = -ENOTTY;
 
 	switch (cmd) {
@@ -859,6 +873,13 @@ static long ashmem_ioctl(struct file *file, unsigned int cmd, unsigned long arg)
 			ashmem_shrink_scan(&ashmem_shrinker, &sc);
 		}
 		break;
+	case ASHMEM_GET_FILE_ID:
+		ret = get_file_id(asma, &ino);
+		if (ret)
+			break;
+
+		ret = put_user(ino, (unsigned long __user *)arg) ? -EFAULT : 0;
+		break;
 	}
 
 	return ret;
@@ -869,6 +890,10 @@ static long ashmem_ioctl(struct file *file, unsigned int cmd, unsigned long arg)
 static long compat_ashmem_ioctl(struct file *file, unsigned int cmd,
 				unsigned long arg)
 {
+	struct ashmem_area *asma = file->private_data;
+	unsigned long ino;
+	long ret;
+
 	switch (cmd) {
 	case COMPAT_ASHMEM_SET_SIZE:
 		cmd = ASHMEM_SET_SIZE;
@@ -876,6 +901,12 @@ static long compat_ashmem_ioctl(struct file *file, unsigned int cmd,
 	case COMPAT_ASHMEM_SET_PROT_MASK:
 		cmd = ASHMEM_SET_PROT_MASK;
 		break;
+	case COMPAT_ASHMEM_GET_FILE_ID:
+		ret = get_file_id(asma, &ino);
+		if (ret)
+			return ret;
+
+		return put_user(ino, (compat_uptr_t __user *)compat_ptr(arg)) ? -EFAULT : 0;
 	}
 	return ashmem_ioctl(file, cmd, arg);
 }
