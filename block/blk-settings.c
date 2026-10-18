@@ -509,7 +509,8 @@ static unsigned int blk_round_down_sectors(unsigned int sectors, unsigned int lb
 int blk_stack_limits(struct queue_limits *t, struct queue_limits *b,
 		     sector_t start)
 {
-	unsigned int top, bottom, alignment, ret = 0;
+	unsigned int top, bottom, alignment;
+	int ret = 0;
 #ifdef CONFIG_DEVICE_XCOPY
 	struct para_limit *limit_b = (struct para_limit *) b->android_kabi_reserved1;
 	struct para_limit *limit_t = (struct para_limit *) t->android_kabi_reserved1;
