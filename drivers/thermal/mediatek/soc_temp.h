@@ -124,19 +124,23 @@
 #define _BITMASK_(_bits_)	(((unsigned int) -1 >> (31 - ((1) ? _bits_)))\
 			& ~((1U << ((0) ? _bits_)) - 1))
 
+#ifndef MIN
 #define MIN(a, b) ({			\
 	typeof(a) _max1 = (a);		\
 	typeof(b) _max2 = (b);		\
 	(void)(&_max1 == &_max2);	\
 	_max1 < _max2 ? _max1 : _max2;	\
 })
+#endif
 
+#ifndef MAX
 #define MAX(a, b) ({			\
 		typeof(a) _max1 = (a);		\
 		typeof(b) _max2 = (b);		\
 		(void)(&_max1 == &_max2);	\
 		_max1 > _max2 ? _max1 : _max2;	\
 })
+#endif
 
 #define MASK_FILED_VALUE(DATA, MSB, LSB) ((DATA & ((unsigned int) -1 >> (31 -  MSB))) >> (LSB))
 
