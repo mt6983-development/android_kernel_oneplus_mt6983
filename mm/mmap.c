@@ -879,6 +879,7 @@ int __vma_adjust(struct vm_area_struct *vma, unsigned long start,
 				return error;
 			}
 		}
+	}
 again:
 	/*
 	 * Get rid of huge pages and shared page tables straddling the split
