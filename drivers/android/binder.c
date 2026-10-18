@@ -784,8 +784,8 @@ static void binder_transaction_priority(struct task_struct *task,
 		desired_prio.sched_policy = SCHED_NORMAL;
 	}
 
-	if (node_prio.prio < desired.prio ||
-	    (node_prio.prio == desired.prio &&
+	if (node_prio.prio < desired_prio.prio ||
+	    (node_prio.prio == desired_prio.prio &&
 	     node_prio.sched_policy == SCHED_FIFO)) {
 		/*
 		 * In case the minimum priority on the node is
