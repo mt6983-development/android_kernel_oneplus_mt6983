@@ -481,8 +481,6 @@ static ssize_t f2fs_sbi_show(struct f2fs_attr *a,
 	}
 #endif
 
-	ui = (unsigned int *)(ptr + a->offset);
-
 #ifdef CONFIG_DEVICE_XCOPY
 	if ((!strcmp(a->attr.name, "xcopy_time_cost_max_defrag")) ||
 			(!strcmp(a->attr.name, "xcopy_time_cost_aver_defrag"))) {
