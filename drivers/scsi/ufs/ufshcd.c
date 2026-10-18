@@ -6075,7 +6075,6 @@ static void ufshcd_err_handler(struct work_struct *work)
 	ufshcd_complete_requests(hba);
 	spin_lock_irqsave(hba->host->host_lock, flags);
 	ufshcd_set_eh_in_progress(hba);
-again:
 	needs_restore = false;
 	needs_reset = false;
 	err_xfer = false;

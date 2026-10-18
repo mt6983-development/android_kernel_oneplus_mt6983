@@ -24,7 +24,9 @@
 #include <trace/events/block.h>
 #include "mtk_blocktag.h"
 
+#ifndef MIN
 #define MIN(a, b) (((a) < (b)) ? (a) : (b))
+#endif
 #define TIME_5S 5000000000
 #define TAG "BLOCKTAG"
 

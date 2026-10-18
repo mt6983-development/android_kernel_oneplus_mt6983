@@ -90,8 +90,12 @@
 #define DEFAULT_GCC_DEQ_BOUND_QUOTA 6
 #define DEFAULT_BLC_BOOST 0
 
+#ifndef MAX
 #define MAX(a, b) (((a) > (b)) ? (a) : (b))
+#endif
+#ifndef MIN
 #define MIN(a, b) (((a) < (b)) ? (a) : (b))
+#endif
 
 #define SEQ_printf(m, x...)\
 do {\
