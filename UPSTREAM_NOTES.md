@@ -8,8 +8,8 @@
 - **Kernel Repository:** `android_kernel_oneplus_mt6983` (`kernel-5.10/`, branch `upstream-5.10.269`)
 - **Modules Repository:** `android_kernel_modules_oneplus_mt6983` (root repository, branch `upstream-5.10.269`)
 - **Toolchain:** Android Clang 12.0.5 (`r416183b`), `lld`, GNU aarch64 cross toolchain
-- **Build Outcome:** Clean build (`exit 0`). `vmlinux`, `Image.gz`, `mt6983.dtb`, `System.map`, and all **710 out-of-tree and in-tree kernel modules** built and packaged into `out/android12-5.10/dist/`.
-- **History Preservation:** Real merge commits preserved; zero squashing; zero force pushes; 100% vendor code intact.
+- **Build Status:** **Unbuilt in this task.** All results in this document that describe prior builds/config outputs are historical reports and were not independently verified here. No build or build-adjacent command was run.
+- **History Preservation:** Stepwise merge commits and the upstreaming/fix commit series are present in the checked-out `lineage-24.0` ancestry. Vendor code retention is subject to the documented static audit; this note does not claim a build or hardware validation.
 
 ---
 
@@ -34,7 +34,7 @@ The upstream Android Common Kernel (ACK) `android13-5.10` branch was merged step
 | 13 | `74761db70929` | `android13-5.10.269_r00` | `Documentation/filesystems/fscrypt.rst`, `arch/arm64/kvm/arm.c`, `arch/arm64/kvm/mmu.c`, `drivers/android/vendor_hooks.c`, `drivers/media/platform/mtk-vcodec/mtk_vcodec_fw_scp.c` (unlinked file dropped), `include/trace/hooks/mm.h`, `kernel/events/core.c` |
 | 14 | `64b1b27c0152` | `aosp/android13-5.10-2026-10` | `fs/f2fs/compress.c`, `fs/fuse/backing.c` (FUSE-BPF unlinked file dropped), `fs/fuse/dev.c`, `fs/fuse/inode.c` |
 
-`make kernelversion` correctly reports: **5.10.269**.
+Static version check: the top-level `Makefile` sets `VERSION = 5`, `PATCHLEVEL = 10`, and `SUBLEVEL = 269`. No `make kernelversion` command was run.
 
 ---
 
@@ -168,9 +168,9 @@ Comparison of `.config` between baseline 5.10.236 and 5.10.269:
 
 ---
 
-## 6. Build Artifacts Produced
+## 6. Historical Build-Artifact Report (Not Verified Here)
 
-Location: `/home/adarsh027/kernel/out/android12-5.10/dist/`
+The prior workspace note reported artifacts at `/home/adarsh027/kernel/out/android12-5.10/dist/`. This task did not inspect or produce them; the list below is unverified historical content, not a build result.
 
 | Artifact | Size | Description |
 |---|---|---|
