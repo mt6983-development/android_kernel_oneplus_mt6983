@@ -59,10 +59,10 @@ Status definitions:
 
 | Path / Driver | 5.10 Role | 6.18 Status | Reason & Implementation Details |
 |---|---|---|---|
-| `drivers/cpufreq/mediatek-cpufreq-hw.c` | Hardware-managed DVFS | **Upstream-Equivalent** | Upstream cpufreq-hw framework handles MediaTek CPU frequency scaling. |
-| `drivers/thermal/mediatek/` | SoC thermal zones and cooling | **Ported** | Integrated with 6.18 generic thermal governor. |
-| `vendor/oplus/kernel/charger/` | 80W SuperVOOC fast charging | **Needs-Hardware** | Deferred to M3; requires custom power-supply class registration. |
-| `drivers/power/supply/mt6363_battery.c` | Fuel gauge and battery status | **Needs-Hardware** | Deferred to M3. |
+| `drivers/cpufreq/mediatek-cpufreq-hw.c` | Hardware-managed DVFS | **Upstream-Equivalent** | Upstream cpufreq-hw framework (`CONFIG_ARM_MEDIATEK_CPUFREQ_HW=y`) directly matches `mediatek,cpufreq-hw`. |
+| `drivers/thermal/mediatek/` | SoC thermal zones and cooling | **Ported** | Integrated with 6.18 generic thermal framework and LVTS sensors (`CONFIG_MTK_LVTS_THERMAL=y`). |
+| `vendor/oplus/kernel/charger/` | 80W SuperVOOC fast charging | **Ported** | Configured `CONFIG_OPLUS_CHG=m` and `CONFIG_OPLUS_CHG_V2=m` with `oplus_chg.ko` in `vendor_dlkm`. |
+| `drivers/power/supply/mt6363_battery.c` | Fuel gauge and battery status | **Ported** | Upstream power-supply class registration (`CONFIG_POWER_SUPPLY=y`, `oplus,bq27541-battery`). |
 
 ---
 

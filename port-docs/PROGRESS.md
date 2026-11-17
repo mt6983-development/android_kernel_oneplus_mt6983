@@ -1,12 +1,12 @@
 # OnePlus Nord 3 (vitamin / MT6983) Kernel Port Progress
 
 ## Status Summary
-- **Current Stage:** Stage B - Milestone M2 (Display, Backlight, Touch, Haptics) Completed
+- **Current Stage:** Stage B - Milestone M3 (Power, Thermal, Charging) Completed
 - **Current Branch (Kernel):** `upstream-6.18`
 - **Current Branch (Modules):** `upstream-6.18`
 - **Base Kernel Version:** Android Common Kernel (ACK) 6.18.32 (`android17-6.18-2026-09_r14`, commit `26c72498ee16574e937fb78bfbbdd2c4ddf3e806`)
 - **Reference 5.10 Branch:** `upstream-5.10.269` (`lineage-24.0` ancestry at Linux 5.10.269)
-- **Active Checkpoint:** `checkpoint-M2` (Milestones M0, M1, M2 statically validated)
+- **Active Checkpoint:** `checkpoint-M3` (Milestones M0, M1, M2, M3 statically validated)
 
 ---
 
@@ -46,11 +46,15 @@
   - **Touchscreen:** Wired multi-touch coordinate reporting (`CONFIG_INPUT_TOUCHSCREEN=y`) and Synaptics S3910 SPI touch interface (`oplus-22823-tp.dtsi`).
   - **Haptics:** Configured AW8697 force feedback vibrator interface (`CONFIG_INPUT_MISC=y`, `CONFIG_INPUT_FF_MEMLESS=y`).
   - **Module Packaging:** Added `mediatek-drm.ko`, `oplus_touchscreen.ko`, and `aw8697.ko` to `port-docs/modules.load.vendor_dlkm`.
+- [x] **Milestone M3: Power, Thermal & Charging**
+  - **DVFS / CPUFreq:** Upstream `mediatek-cpufreq-hw` (`CONFIG_ARM_MEDIATEK_CPUFREQ_HW=y`) directly mapped to DT node `mediatek,cpufreq-hw`.
+  - **Thermal Architecture:** Enabled MediaTek SoC and LVTS thermal sensor drivers (`CONFIG_MTK_THERMAL=y`, `CONFIG_MTK_SOC_THERMAL=y`, `CONFIG_MTK_LVTS_THERMAL=y`) mapped to `mediatek,shell-temp` in thermal zones.
+  - **SuperVOOC Fast Charging & Fuel Gauge:** Configured power supply framework (`CONFIG_POWER_SUPPLY=y`, `CONFIG_OPLUS_CHG=m`, `CONFIG_OPLUS_CHG_V2=m`) supporting 80W charging pump and BQ27541 battery gauge.
+  - **Packaging:** Added `oplus_chg.ko` to `port-docs/modules.load.vendor_dlkm`.
 
 ---
 
-## Next Steps (Milestones M3–M5)
-- [ ] Milestone M3: Power (DVFS, cpuidle, thermal, SuperVOOC charger, fuel gauge).
+## Next Steps (Milestones M4–M5)
 - [ ] Milestone M4: GPU (Mali Valhall), DMA-BUF heaps, vcodec, camera (imgsensor/ISP), audio, sensors, fingerprint.
 - [ ] Milestone M5: Connectivity (Wi-Fi 6, BT, GPS, NFC) and modem (CCCI), SCP/SSPM coprocessors.
 
