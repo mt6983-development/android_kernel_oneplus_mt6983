@@ -11,24 +11,33 @@ This design ensures compliance with Google GKI architecture while enabling the e
 
 ---
 
-## 2. Boot-Critical Configuration Audit (M0 Requirements)
+## 2. Platform & Peripherals Configuration Audit (Milestones M0–M5)
 
-| Subsystem | Configuration Option | 5.10 State | 6.18 State | Rationale |
+| Subsystem / Milestone | Configuration Option | 5.10 State | 6.18 State | Rationale |
 |---|---|---|---|---|
-| **dm-verity** | `CONFIG_DM_VERITY=y`, `CONFIG_DM_VERITY_AVB=y` | Active | Active | Required for Android Verified Boot 2.0 (AVB) rootfs mount. |
-| **FBE / Inline Crypto** | `CONFIG_FS_ENCRYPTION=y`, `CONFIG_FS_ENCRYPTION_INLINE_CRYPT=y` | Active | Active | Hardware-accelerated file-based encryption for userdata partition. |
-| **SELinux** | `CONFIG_SECURITY_SELINUX=y` | Active | Active | Enforcing mandatory access controls required by Android userspace. |
-| **Binder IPC** | `CONFIG_ANDROID_BINDER_IPC=y`, `CONFIG_ANDROID_BINDERFS=y` | Active | Active | Core Android IPC communication channel. |
-| **DMA-BUF Heaps** | `CONFIG_DMABUF_HEAPS=y`, `CONFIG_DMABUF_HEAPS_SYSTEM=y` | Active | Active | Modern replacement for obsolete Android ION memory allocators. |
-| **Storage / Filesystems** | `CONFIG_F2FS_FS=y`, `CONFIG_EROFS_FS=y`, `CONFIG_EXT4_FS=y` | Active | Active | High-performance flash filesystem for userdata, compressed EROFS for system/vendor partitions. |
-| **zRAM** | `CONFIG_ZRAM=m` | Active | Active | Compressed RAM swap for low-memory handling. |
-| **UFS Host Controller** | `CONFIG_SCSI_UFS_MEDIATEK=y` | Out-of-tree module | In-tree upstream driver | Natively supports `mediatek,mt8183-ufshci` with standard clock gating and PHY management. |
-| **MediaTek Clocks** | `CONFIG_COMMON_CLK_MEDIATEK=y`, `CONFIG_COMMON_CLK_MT6983=y` | Active | Active | Registers topckgen, apmixedsys, infracfg, and pericfg clock trees. |
-| **MediaTek Pinctrl** | `CONFIG_PINCTRL_MTK_PARIS=y`, `CONFIG_PINCTRL_MT6983=y` | Active | Active | Paris-framework GPIO and pinmux controller for MT6983. |
-| **PMIC / SPMI** | `CONFIG_SPMI_MTK_PMIF=y`, `CONFIG_REGULATOR=y` | Active | Active | SPMI bus interface controller and voltage regulator subsystem. |
-| **Early Console** | `CONFIG_SERIAL_8250_MT6577=y`, `CONFIG_SERIAL_8250_CONSOLE=y` | Active | Active | Early UART console support for boot troubleshooting via `earlycon=mtk8250,0x11001000`. |
-| **USB / ADB Gadget** | `CONFIG_USB_MTU3=y`, `CONFIG_USB_CONFIGFS=y` | Active | Active | MediaTek MTU3 dual-role controller with ConfigFS Android gadget. |
-| **Pstore / Ramoops** | `CONFIG_PSTORE=y`, `CONFIG_PSTORE_RAM=y`, `CONFIG_PSTORE_CONSOLE=y` | Active | Active | Preserves crash logs in persistent RAM across warm reboots. |
+| **Early Console (M0)** | `CONFIG_SERIAL_8250_MT6577=y`, `CONFIG_SERIAL_8250_CONSOLE=y` | Active | Active | Early UART console support for boot troubleshooting via `earlycon=mtk8250,0x11001000`. |
+| **MediaTek Clocks (M0)** | `CONFIG_COMMON_CLK_MEDIATEK=y`, `CONFIG_COMMON_CLK_MT6983=y` | Active | Active | Registers topckgen, apmixedsys, infracfg, and pericfg clock trees. |
+| **MediaTek Pinctrl (M0)** | `CONFIG_PINCTRL_MTK_PARIS=y`, `CONFIG_PINCTRL_MT6983=y` | Active | Active | Paris-framework GPIO and pinmux controller for MT6983. |
+| **PMIC / SPMI (M0)** | `CONFIG_SPMI_MTK_PMIF=y`, `CONFIG_REGULATOR=y` | Active | Active | SPMI bus interface controller and voltage regulator subsystem. |
+| **UFS Host Controller (M0)** | `CONFIG_SCSI_UFS_MEDIATEK=y` | Out-of-tree module | In-tree upstream driver | Natively supports `mediatek,mt8183-ufshci` with standard clock gating and PHY management. |
+| **USB / ADB Gadget (M0)** | `CONFIG_USB_MTU3=y`, `CONFIG_USB_CONFIGFS=y` | Active | Active | MediaTek MTU3 dual-role controller with ConfigFS Android gadget. |
+| **dm-verity (M1)** | `CONFIG_DM_VERITY=y`, `CONFIG_DM_VERITY_AVB=y`, `CONFIG_DM_VERITY_FEC=y` | Active | Active | Required for Android Verified Boot 2.0 (AVB) rootfs mount with forward error correction. |
+| **FBE / Inline Crypto (M1)** | `CONFIG_FS_ENCRYPTION=y`, `CONFIG_FS_ENCRYPTION_INLINE_CRYPT=y`, `CONFIG_SCSI_UFS_CRYPTO=y` | Active | Active | Hardware-accelerated file-based encryption for userdata partition via blk-crypto and UFS ICE. |
+| **SELinux & IPC (M1)** | `CONFIG_SECURITY_SELINUX=y`, `CONFIG_ANDROID_BINDER_IPC=y`, `CONFIG_ANDROID_BINDERFS=y` | Active | Active | Enforcing mandatory access controls and Binder IPC channels. |
+| **Storage / Filesystems (M1)** | `CONFIG_F2FS_FS=y`, `CONFIG_EROFS_FS=y`, `CONFIG_EXT4_FS=y` | Active | Active | F2FS with compression/security, EROFS with LZ4/ZSTD micro-decompression for system/vendor. |
+| **zRAM (M1)** | `CONFIG_ZRAM=m`, `CONFIG_ZRAM_MULTI_COMP=y`, `CONFIG_ZRAM_ANDROID_IOCTL=y` | Active | Active | Multi-compression stream RAM swap for background memory management. |
+| **Display Subsystem (M2)** | `CONFIG_DRM_MEDIATEK=m`, `CONFIG_DRM_MEDIATEK_DP=m`, `CONFIG_MTK_MMSYS=y` | Active | Active | MediaTek DRM atomic modesetting, MMSYS controller, MIPI-TX and DSI0/1 routing. |
+| **Backlight & LEDs (M2)** | `CONFIG_BACKLIGHT_PWM=y`, `CONFIG_LEDS_CLASS=y` | Active | Active | PWM-driven display backlight and notification LEDs. |
+| **Touchscreen & Haptics (M2)** | `CONFIG_INPUT_TOUCHSCREEN=y`, `CONFIG_INPUT_MISC=y`, `CONFIG_INPUT_FF_MEMLESS=y` | Active | Active | Multi-touch input framework, Synaptics S3910 SPI interface, and AW8697 force feedback. |
+| **DVFS & CPUFreq (M3)** | `CONFIG_ARM_MEDIATEK_CPUFREQ=y`, `CONFIG_ARM_MEDIATEK_CPUFREQ_HW=y` | Active | Active | Upstream hardware-managed frequency scaling for Cortex-X2, A710, and A510 cores. |
+| **Thermal Subsystem (M3)** | `CONFIG_MTK_THERMAL=y`, `CONFIG_MTK_SOC_THERMAL=y`, `CONFIG_MTK_LVTS_THERMAL=y` | Active | Active | Low Voltage Thermal Sensor (LVTS) temperature monitoring and thermal throttling. |
+| **Charging & Fuel Gauge (M3)** | `CONFIG_POWER_SUPPLY=y`, `CONFIG_OPLUS_CHG=m`, `CONFIG_OPLUS_CHG_V2=m` | Active | Active | Power supply class, BQ27541 fuel gauge, and 80W SuperVOOC fast charging stack. |
+| **GPU Subsystem (M4)** | `CONFIG_DMABUF_HEAPS=y`, `CONFIG_DMABUF_HEAPS_SYSTEM=y` | Active | Active | ARM Mali-G710 (Valhall MC10) DDK module (`mali_kbase.ko`) over DMA-BUF memory heaps. |
+| **Video Codec (M4)** | `CONFIG_VIDEO_MEDIATEK_VCODEC=m` | Active | Active | Hardware video decoding/encoding (`mtk-vcodec-dec.ko`, `mtk-vcodec-enc.ko`). |
+| **Audio Architecture (M4)** | `CONFIG_SOUND=y`, `CONFIG_SND_SOC=y`, `CONFIG_SND_SOC_MTK_BTCVSD=m` | Active | Active | ASoC platform sound card (`snd-soc-mt6983.ko`, `snd-soc-mtk-common.ko`). |
+| **Sensors, NFC & FP (M4)** | `CONFIG_IIO=y`, `CONFIG_NFC=m`, `CONFIG_UFF_FINGERPRINT=m` | Active | Active | IIO sensors, NXP SN110 NFC controller, and OnePlus optical in-display fingerprint. |
+| **Connectivity & Modem (M5)** | `CONFIG_CFG80211=m`, `CONFIG_MAC80211=m`, `CONFIG_BT=m`, `CONFIG_RFKILL=m` | Active | Active | Modular Wi-Fi 6, Bluetooth, GPS (`conninfra.ko`, `wlan_drv_gen4m.ko`), and CCCI modem IPC. |
+| **Coprocessors & TEE (M5)** | `CONFIG_MTK_SCP=y`, `CONFIG_RPMSG_MTK_SCP=y`, `CONFIG_TEE=y`, `CONFIG_OPTEE=y` | Active | Active | System Companion Processor (SCP) remoteproc and ARM Trusted Execution Environment. |
 
 ---
 
