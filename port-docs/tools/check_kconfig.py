@@ -17,8 +17,10 @@ def check_kconfig_file(filepath):
         m = source_re.match(line)
         if m:
             included = m.group(1)
-            # relative to kernel root
-            if not os.path.exists(included) and not included.startswith('$'):
+            # relative to kernel root, ignore $(...) variables
+            if '$(' in included or included.startswith('$'):
+                continue
+            if not os.path.exists(included):
                 errors.append(f"Line {idx}: sourced file does not exist: {included}")
 
     return errors
@@ -29,7 +31,7 @@ def main():
     checked = 0
     err_count = 0
     for root, dirs, files in os.walk(root_dir):
-        if any(p in root for p in ['.git', '.repo', 'out']):
+        if any(p in root for p in ['.git', '.repo', 'out', 'scripts/kconfig/tests']):
             continue
         for f in files:
             if f == 'Kconfig' or f.startswith('Kconfig.'):

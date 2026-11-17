@@ -1,12 +1,12 @@
 # OnePlus Nord 3 (vitamin / MT6983) Kernel Port Progress
 
 ## Status Summary
-- **Current Stage:** Stage B - Milestone M0 (Minimal Boot) Completed
+- **Current Stage:** Stage B - Milestone M1 (Storage & Security) Completed
 - **Current Branch (Kernel):** `upstream-6.18`
 - **Current Branch (Modules):** `upstream-6.18`
 - **Base Kernel Version:** Android Common Kernel (ACK) 6.18.32 (`android17-6.18-2026-09_r14`, commit `26c72498ee16574e937fb78bfbbdd2c4ddf3e806`)
 - **Reference 5.10 Branch:** `upstream-5.10.269` (`lineage-24.0` ancestry at Linux 5.10.269)
-- **Active Checkpoint:** `checkpoint-M0` (Ready for hardware bringup build & boot test)
+- **Active Checkpoint:** `checkpoint-M1` (Milestones M0 & M1 statically validated)
 
 ---
 
@@ -34,12 +34,16 @@
   - **ROM Integration:** Written `port-docs/DEVICE_TREE_CHANGES.md` and generated patches `0001-BoardConfig-update-kernel-to-6.18-GKI.patch` and `0002-device-tree-cmdline-and-bootconfig.patch` in `port-docs/rom-patches/`.
   - **Boot Debugging:** Written `port-docs/BOOT_DEBUG.md` (ranked blockers, logging, full on-device test checklist) and `port-docs/BUILD_COMMANDS.md` (exact build, packaging, and first-boot steps).
   - **Static Checks:** Verified `git diff --check`, zero conflict markers, zero `.rej`/`.orig` files.
+- [x] **Milestone M1: Storage & Security**
+  - **dm-verity & AVB:** Verified `CONFIG_DM_VERITY=y`, `CONFIG_DM_VERITY_AVB=y`, `CONFIG_DM_VERITY_FEC=y`.
+  - **FBE / Inline Crypto:** Verified `CONFIG_FS_ENCRYPTION=y`, `CONFIG_FS_ENCRYPTION_INLINE_CRYPT=y`, `CONFIG_BLK_INLINE_ENCRYPTION=y`, `CONFIG_SCSI_UFS_CRYPTO=y` with upstream `ufs-mediatek.c` hardware crypto reset and key slot support.
+  - **Filesystems:** Configured `CONFIG_F2FS_FS=y`, `CONFIG_F2FS_FS_SECURITY=y`, `CONFIG_F2FS_FS_COMPRESSION=y`, `CONFIG_EROFS_FS=y`, `CONFIG_EROFS_FS_ZIP_LZ4=y`, `CONFIG_EROFS_FS_ZIP_ZSTD=y`, `CONFIG_EXT4_FS=y`.
+  - **Security & IPC:** Verified `CONFIG_SECURITY_SELINUX=y`, `CONFIG_ANDROID_BINDER_IPC=y`, `CONFIG_ANDROID_BINDERFS=y`.
+  - **Memory & Swap:** Verified `CONFIG_ZRAM=m`, `CONFIG_ZRAM_MULTI_COMP=y`, `CONFIG_ZRAM_ANDROID_IOCTL=y`.
 
 ---
 
-## Next Steps (Milestones M1–M5)
-- [ ] Wait for user build and boot verification of Milestone M0 on physical device.
-- [ ] Milestone M1: Storage and Security (dm-verity, FBE/inline crypto, f2fs/erofs, SELinux, Binder, zRAM).
+## Next Steps (Milestones M2–M5)
 - [ ] Milestone M2: Display, Backlight, Touch, Haptics.
 - [ ] Milestone M3: Power (DVFS, cpuidle, thermal, SuperVOOC charger, fuel gauge).
 - [ ] Milestone M4: GPU (Mali Valhall), DMA-BUF heaps, vcodec, camera (imgsensor/ISP), audio, sensors, fingerprint.

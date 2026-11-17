@@ -30,7 +30,13 @@ else
     echo "No .rej or .orig files found. Clean."
 fi
 
-echo "[4/4] Verifying top-level Makefile..."
+echo "[4/6] Verifying top-level Makefile..."
 head -n 5 Makefile
+
+echo "[5/6] Validating Device Trees with check_dt.py..."
+python3 "${SCRIPT_DIR}/check_dt.py"
+
+echo "[6/6] Validating Kconfig structure with check_kconfig.py..."
+python3 "${SCRIPT_DIR}/check_kconfig.py"
 
 echo "=== All Static Checks Passed Cleanly ==="
