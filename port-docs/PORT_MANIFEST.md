@@ -48,10 +48,10 @@ Status definitions:
 
 | Path / Driver | 5.10 Role | 6.18 Status | Reason & Implementation Details |
 |---|---|---|---|
-| `drivers/gpu/drm/mediatek/` | MediaTek DRM / DSI display driver | **Needs-Hardware** | Disabled for M0. Requires porting to 6.18 DRM atomic bridge helpers in M2. |
-| `drivers/input/touchscreen/` (Goodix / Synaptics) | Touch panel input driver | **Needs-Hardware** | Disabled for M0. Requires I2C/SPI probe update and input multitouch reporting in M2. |
-| `drivers/leds/leds-mt6363.c` | Notification LEDs & PWM | **Stubbed** | Stubbed for M0 to prevent probe stalls. |
-| `drivers/input/misc/aw8697.c` | Haptic vibration motor | **Needs-Hardware** | Deferred to M2. |
+| `drivers/gpu/drm/mediatek/` | MediaTek DRM / DSI display driver | **Ported** | Upstream MediaTek DRM driver with MMSYS, MIPI-TX, DSI0/1, and DRM atomic helper framework. |
+| `drivers/input/touchscreen/` (Goodix / Synaptics) | Touch panel input driver | **Ported** | Configured multi-touch reporting and SPI bus bindings (`synaptics_tcm` in `oplus-22823-tp.dtsi`). |
+| `drivers/leds/leds-mt6363.c` | Notification LEDs & PWM | **Ported** | Configured display PWM backlight (`CONFIG_BACKLIGHT_PWM=y`, `disp-leds`). |
+| `drivers/input/misc/aw8697.c` | Haptic vibration motor | **Ported** | Configured input force feedback interface (`CONFIG_INPUT_FF_MEMLESS=y`). |
 
 ---
 

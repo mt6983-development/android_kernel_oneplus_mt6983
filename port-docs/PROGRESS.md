@@ -1,12 +1,12 @@
 # OnePlus Nord 3 (vitamin / MT6983) Kernel Port Progress
 
 ## Status Summary
-- **Current Stage:** Stage B - Milestone M1 (Storage & Security) Completed
+- **Current Stage:** Stage B - Milestone M2 (Display, Backlight, Touch, Haptics) Completed
 - **Current Branch (Kernel):** `upstream-6.18`
 - **Current Branch (Modules):** `upstream-6.18`
 - **Base Kernel Version:** Android Common Kernel (ACK) 6.18.32 (`android17-6.18-2026-09_r14`, commit `26c72498ee16574e937fb78bfbbdd2c4ddf3e806`)
 - **Reference 5.10 Branch:** `upstream-5.10.269` (`lineage-24.0` ancestry at Linux 5.10.269)
-- **Active Checkpoint:** `checkpoint-M1` (Milestones M0 & M1 statically validated)
+- **Active Checkpoint:** `checkpoint-M2` (Milestones M0, M1, M2 statically validated)
 
 ---
 
@@ -40,11 +40,16 @@
   - **Filesystems:** Configured `CONFIG_F2FS_FS=y`, `CONFIG_F2FS_FS_SECURITY=y`, `CONFIG_F2FS_FS_COMPRESSION=y`, `CONFIG_EROFS_FS=y`, `CONFIG_EROFS_FS_ZIP_LZ4=y`, `CONFIG_EROFS_FS_ZIP_ZSTD=y`, `CONFIG_EXT4_FS=y`.
   - **Security & IPC:** Verified `CONFIG_SECURITY_SELINUX=y`, `CONFIG_ANDROID_BINDER_IPC=y`, `CONFIG_ANDROID_BINDERFS=y`.
   - **Memory & Swap:** Verified `CONFIG_ZRAM=m`, `CONFIG_ZRAM_MULTI_COMP=y`, `CONFIG_ZRAM_ANDROID_IOCTL=y`.
+- [x] **Milestone M2: Display, Backlight, Touch & Haptics**
+  - **Display Subsystem:** Integrated MediaTek DRM (`CONFIG_DRM_MEDIATEK=m`, `CONFIG_DRM_MEDIATEK_DP=m`, `CONFIG_MTK_MMSYS=y`) and atomic modesetting helpers with MT6983 DSI and MIPI-TX routing.
+  - **Backlight Control:** Configured PWM and disp-leds backlight drivers (`CONFIG_BACKLIGHT_PWM=y`, `CONFIG_LEDS_CLASS=y`, `mediatek,disp-leds`).
+  - **Touchscreen:** Wired multi-touch coordinate reporting (`CONFIG_INPUT_TOUCHSCREEN=y`) and Synaptics S3910 SPI touch interface (`oplus-22823-tp.dtsi`).
+  - **Haptics:** Configured AW8697 force feedback vibrator interface (`CONFIG_INPUT_MISC=y`, `CONFIG_INPUT_FF_MEMLESS=y`).
+  - **Module Packaging:** Added `mediatek-drm.ko`, `oplus_touchscreen.ko`, and `aw8697.ko` to `port-docs/modules.load.vendor_dlkm`.
 
 ---
 
-## Next Steps (Milestones M2–M5)
-- [ ] Milestone M2: Display, Backlight, Touch, Haptics.
+## Next Steps (Milestones M3–M5)
 - [ ] Milestone M3: Power (DVFS, cpuidle, thermal, SuperVOOC charger, fuel gauge).
 - [ ] Milestone M4: GPU (Mali Valhall), DMA-BUF heaps, vcodec, camera (imgsensor/ISP), audio, sensors, fingerprint.
 - [ ] Milestone M5: Connectivity (Wi-Fi 6, BT, GPS, NFC) and modem (CCCI), SCP/SSPM coprocessors.

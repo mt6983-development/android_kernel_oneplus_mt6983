@@ -1,6 +1,9 @@
 # Second-stage modules (vendor_dlkm)
 # Non-boot-critical drivers loaded after userdata is decrypted
 zram.ko
+mediatek-drm.ko
+oplus_touchscreen.ko
+aw8697.ko
 oplus_secure_common.ko
 sn_nci.ko
 horae_shell_temp.ko
