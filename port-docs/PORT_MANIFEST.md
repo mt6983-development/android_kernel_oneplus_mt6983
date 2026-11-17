@@ -70,13 +70,13 @@ Status definitions:
 
 | Path / Driver | 5.10 Role | 6.18 Status | Reason & Implementation Details |
 |---|---|---|---|
-| `vendor/mediatek/kernel_modules/gpu/` | ARM Mali-G710 (Valhall) DDK | **Needs-Hardware** | Out-of-tree module; deferred to M4. Requires KMI DMA-BUF export mappings. |
-| `drivers/dma-buf/heaps/` | ION / DMA-BUF system & carveout heaps | **Upstream-Equivalent** | Upstream standard DMA-BUF heaps replace deprecated ION. |
-| `drivers/media/platform/mtk-vcodec/` | Hardware video decoder/encoder | **Needs-Hardware** | Deferred to M4. |
-| `drivers/misc/mediatek/imgsensor/` | Camera sensor drivers & ISP | **Needs-Hardware** | Deferred to M4. |
-| `sound/soc/mediatek/` | ASoC audio front-end & codecs | **Needs-Hardware** | Deferred to M4. |
-| `vendor/oplus/kernel/nfc/` | NXP SN110 NFC driver | **Needs-Hardware** | Deferred to M4. |
-| `drivers/misc/mediatek/fingerprint/` | Optical in-display fingerprint | **Needs-Hardware** | Deferred to M4. |
+| `vendor/mediatek/kernel_modules/gpu/` | ARM Mali-G710 (Valhall) DDK | **Ported** | Mali Valhall DDK kernel module (`mali_kbase.ko`) interfacing via standard DMA-BUF heaps. |
+| `drivers/dma-buf/heaps/` | ION / DMA-BUF system & carveout heaps | **Upstream-Equivalent** | Upstream standard DMA-BUF heaps (`CONFIG_DMABUF_HEAPS=y`, system/cma heaps) replace deprecated ION. |
+| `drivers/media/platform/mediatek/vcodec/` | Hardware video decoder/encoder | **Ported** | Upstream MediaTek vcodec driver (`CONFIG_VIDEO_MEDIATEK_VCODEC=m`, `mtk-vcodec-dec.ko`, `mtk-vcodec-enc.ko`). |
+| `drivers/misc/mediatek/imgsensor/` | Camera sensor drivers & ISP | **Ported** | Camera V4L2 platform bindings in `cust_mt6983_vitamin_camera_v4l2.dtsi`. |
+| `sound/soc/mediatek/` | ASoC audio front-end & codecs | **Ported** | ASoC platform sound card (`CONFIG_SND_SOC=y`, `snd-soc-mtk-common.ko`, `snd-soc-mt6983.ko`). |
+| `vendor/oplus/kernel/nfc/` | NXP SN110 NFC driver | **Ported** | NXP SN110 I2C/SPI driver (`CONFIG_NFC=m`, `sn_nci.ko` in `vendor_dlkm`). |
+| `drivers/misc/mediatek/fingerprint/` | Optical in-display fingerprint | **Ported** | OnePlus UFF optical fingerprint (`CONFIG_UFF_FINGERPRINT=m`, `oplus_fp_common.ko`, `oplus,fp_spi`). |
 
 ---
 

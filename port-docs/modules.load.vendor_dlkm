@@ -9,3 +9,9 @@ sn_nci.ko
 horae_shell_temp.ko
 oplus_ipa_thermal.ko
 oplus_chg.ko
+mali_kbase.ko
+mtk-vcodec-dec.ko
+mtk-vcodec-enc.ko
+snd-soc-mtk-common.ko
+snd-soc-mt6983.ko
+oplus_fp_common.ko
