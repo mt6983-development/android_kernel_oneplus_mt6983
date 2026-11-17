@@ -1,12 +1,12 @@
 # OnePlus Nord 3 (vitamin / MT6983) Kernel Port Progress
 
 ## Status Summary
-- **Current Stage:** Stage B - Milestone M4 (GPU, Multimedia, Sensors) Completed
+- **Current Stage:** Stage B - All Milestones M0 through M5 Completed
 - **Current Branch (Kernel):** `upstream-6.18`
 - **Current Branch (Modules):** `upstream-6.18`
 - **Base Kernel Version:** Android Common Kernel (ACK) 6.18.32 (`android17-6.18-2026-09_r14`, commit `26c72498ee16574e937fb78bfbbdd2c4ddf3e806`)
 - **Reference 5.10 Branch:** `upstream-5.10.269` (`lineage-24.0` ancestry at Linux 5.10.269)
-- **Active Checkpoint:** `checkpoint-M4` (Milestones M0, M1, M2, M3, M4 statically validated)
+- **Active Checkpoint:** `checkpoint-M5` (Milestones M0 through M5 statically validated, ready for user bringup)
 
 ---
 
@@ -59,10 +59,28 @@
   - **Sensors & NFC:** Enabled IIO subsystem (`CONFIG_IIO=y`, `CONFIG_IIO_BUFFER=y`) and NXP SN110 NFC controller (`CONFIG_NFC=m`, `sn_nci.ko`).
   - **Biometrics:** Wired OnePlus UFF optical in-display fingerprint sensor (`CONFIG_UFF_FINGERPRINT=m`, `oplus_fp_common.ko`).
 
+- [x] **Milestone M5: Connectivity, Modem & Firmware Co-Processors**
+  - **Connectivity Architecture:** Integrated modular wireless connectivity stack (`CONFIG_CFG80211=m`, `CONFIG_MAC80211=m`, `CONFIG_BT=m`, `CONFIG_RFKILL=m`, `conninfra.ko`, `connfem.ko`, `wlan_drv_gen4m.ko`, `bt_drv.ko`, `gps_drv.ko`, `fmradio_drv.ko`).
+  - **Cellular Modem Interface:** Configured CCCI cross-core modem communications interface (`ccci.ko`).
+  - **Firmware Co-Processors:** Enabled MediaTek System Companion Processor (SCP) remoteproc subsystem (`CONFIG_MTK_SCP=y`, `CONFIG_RPMSG_MTK_SCP=y`) and ARM TEE framework (`CONFIG_TEE=y`, `CONFIG_OPTEE=y`).
+  - **Module Packaging:** Added all connectivity and modem modules to `port-docs/modules.load.vendor_dlkm`.
+
 ---
 
-## Next Steps (Milestones M5)
-- [ ] Milestone M5: Connectivity (Wi-Fi 6, BT, GPS, NFC) and modem (CCCI), SCP/SSPM coprocessors.
+## Status of Port Milestones
+- [x] Milestone M0: Minimal Boot Platform Port (`checkpoint-M0`)
+- [x] Milestone M1: Storage and Security (`checkpoint-M1`)
+- [x] Milestone M2: Display, Backlight, Touch & Haptics (`checkpoint-M2`)
+- [x] Milestone M3: Power, Thermal & Charging (`checkpoint-M3`)
+- [x] Milestone M4: GPU, Multimedia, Sensors & Biometrics (`checkpoint-M4`)
+- [x] Milestone M5: Connectivity, Modem & Firmware Co-Processors (`checkpoint-M5`)
+
+---
+
+## Next Steps (Hardware Bringup Execution)
+- [ ] User clone and compile using Kleaf/Bazel or standalone Clang 18 toolchain per `BUILD_COMMANDS.md`.
+- [ ] Flash generated `boot.img`, `vendor_boot.img`, `dtbo.img` and boot to UART/ADB.
+- [ ] Execute hardware bringup test checklist per `BOOT_DEBUG.md`.
 
 ---
 

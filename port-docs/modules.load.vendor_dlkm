@@ -15,3 +15,10 @@ mtk-vcodec-enc.ko
 snd-soc-mtk-common.ko
 snd-soc-mt6983.ko
 oplus_fp_common.ko
+conninfra.ko
+connfem.ko
+wlan_drv_gen4m.ko
+bt_drv.ko
+gps_drv.ko
+fmradio_drv.ko
+ccci.ko

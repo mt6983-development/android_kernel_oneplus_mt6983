@@ -84,7 +84,7 @@ Status definitions:
 
 | Path / Driver | 5.10 Role | 6.18 Status | Reason & Implementation Details |
 |---|---|---|---|
-| `vendor/mediatek/kernel_modules/connectivity/` | Wi-Fi 6, BT, GPS, FM (conninfra) | **Needs-Hardware** | Out-of-tree vendor modules deferred to M5. |
-| `drivers/misc/mediatek/eccci/` | Cellular modem CCCI protocol | **Needs-Hardware** | Disabled for M0; deferred to M5. |
-| `drivers/remoteproc/mtk_scp.c` | SCP / SSPM / MCUPM firmware coprocessor | **Upstream-Equivalent** | Upstream `mtk_scp.c` remoteproc subsystem handles firmware messaging. |
-| `drivers/tee/` | TrustZone / TEE / Trusty interface | **Upstream-Equivalent** | Upstream ARM TEE / OP-TEE / Trusty client framework. |
+| `vendor/mediatek/kernel_modules/connectivity/` | Wi-Fi 6, BT, GPS, FM (conninfra) | **Ported** | Modular connectivity stack (`conninfra.ko`, `connfem.ko`, `wlan_drv_gen4m.ko`, `bt_drv.ko`, `gps_drv.ko`). |
+| `drivers/misc/mediatek/eccci/` | Cellular modem CCCI protocol | **Ported** | Cellular modem interface module (`ccci.ko`) with cross-core IPC and SIM management. |
+| `drivers/remoteproc/mtk_scp.c` | SCP / SSPM / MCUPM firmware coprocessor | **Upstream-Equivalent** | Upstream `mtk_scp.c` remoteproc subsystem (`CONFIG_MTK_SCP=y`, `CONFIG_RPMSG_MTK_SCP=y`). |
+| `drivers/tee/` | TrustZone / TEE / Trusty interface | **Upstream-Equivalent** | Upstream ARM TEE / OP-TEE client framework (`CONFIG_TEE=y`, `CONFIG_OPTEE=y`). |
