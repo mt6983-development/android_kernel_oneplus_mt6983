@@ -1,0 +1,7 @@
+# Second-stage modules (vendor_dlkm)
+# Non-boot-critical drivers loaded after userdata is decrypted
+zram.ko
+oplus_secure_common.ko
+sn_nci.ko
+horae_shell_temp.ko
+oplus_ipa_thermal.ko

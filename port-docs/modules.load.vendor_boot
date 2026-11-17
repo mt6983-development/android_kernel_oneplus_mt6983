@@ -1,0 +1,8 @@
+# First-stage init modules (vendor_boot)
+# Critical for mounting userdata, initial display/earlycon, and basic power
+clk-mt6983.ko
+pinctrl-mt6983.ko
+spmi-mtk-pmif.ko
+ufs-mediatek.ko
+mtk_iommu.ko
+mtu3.ko

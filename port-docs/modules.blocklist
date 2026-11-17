@@ -1,0 +1,6 @@
+# Modules explicitly blocked from autoloading during M0 bringup
+# to prevent kernel hangs before user interaction
+blocklist wlan
+blocklist btif
+blocklist ccci
+blocklist imgsensor
