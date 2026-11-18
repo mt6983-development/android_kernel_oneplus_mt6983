@@ -163,6 +163,16 @@ extern const struct clk_ops mtk_mux_gate_hwv_fenc_clr_set_upd_ops;
 				_shift, _width, _gate, _upd_ofs, _upd,			\
 				_fenc_sta_mon_ofs, _fenc, 0)
 
+#define MUX_HWV(_id, _name, _parents, _mux_ofs,					\
+				_mux_set_ofs, _mux_clr_ofs,			\
+				_hwv_sta_ofs, _hwv_set_ofs, _hwv_clr_ofs,	\
+				_shift, _width, _gate, _upd_ofs, _upd)		\
+			MUX_GATE_HWV_FENC_CLR_SET_UPD_FLAGS(_id, _name, _parents,	\
+				_mux_ofs, _mux_set_ofs, _mux_clr_ofs,			\
+				_hwv_sta_ofs, _hwv_set_ofs, _hwv_clr_ofs,		\
+				_shift, _width, _gate, _upd_ofs, _upd,		\
+				0, 0, CLK_SET_RATE_PARENT)
+
 #define MUX_GATE_FENC_CLR_SET_UPD_FLAGS(_id, _name, _parents, _paridx,		\
 			_num_parents, _mux_ofs, _mux_set_ofs, _mux_clr_ofs,	\
 			_shift, _width, _gate, _upd_ofs, _upd,			\
