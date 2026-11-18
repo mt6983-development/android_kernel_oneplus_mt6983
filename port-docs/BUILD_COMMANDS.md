@@ -69,10 +69,12 @@ cp ${OUT_DIR}/arch/arm64/boot/Image ${DIST_DIR}/Image-debug
 
 If using a full AOSP workspace with Kleaf:
 
+> **Note:** Kleaf `*_dist` targets are `pkg_install` executable rules. Use `tools/bazel run` to execute the installer and stage files into `out/.../dist/`. (Using `tools/bazel build` only compiles into `bazel-bin/` without copying out).
+
 1. **OnePlus Nord 3 (vitamin) Release Distribution:**
    Builds the kernel Image with `vitamin_gki.fragment`, MT6983 base DTB, OnePlus Nord 3 board DTBO, and modules:
    ```bash
-   tools/bazel build --config=fast //common:vitamin_dist
+   tools/bazel run --config=fast //common:vitamin_dist
    ```
    Artifacts are staged to `out/vitamin/dist/`:
    - `Image`
@@ -83,13 +85,13 @@ If using a full AOSP workspace with Kleaf:
 2. **OnePlus Nord 3 (vitamin) Debug Diagnostic Distribution:**
    Builds with verbose earlycon, boottime tracing, ftrace, and ramoops diagnostic config:
    ```bash
-   tools/bazel build --config=fast //common:vitamin_debug_dist
+   tools/bazel run --config=fast //common:vitamin_debug_dist
    ```
    Artifacts are staged to `out/vitamin_debug/dist/`.
 
 3. **Generic Kernel Image (GKI) Only:**
    ```bash
-   tools/bazel build --config=fast //common:kernel_aarch64_dist
+   tools/bazel run --config=fast //common:kernel_aarch64_dist
    ```
    Artifacts are staged to `out/kernel_aarch64/dist/`.
 
