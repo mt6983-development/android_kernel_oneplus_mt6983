@@ -187,3 +187,8 @@ sphinx_*/
 
 # bc language scripts (not LLVM bitcode)
 !kernel/time/timeconst.bc
+
+# Build outputs and logs
+port-docs/build.log
+build.log
+out/
