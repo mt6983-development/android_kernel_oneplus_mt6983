@@ -136,6 +136,8 @@ The BUILD AND FIX loop on branch `upstream-6.18` resolved the following build is
 | `drivers/clk/mediatek/clk-mux.h` | `call to undeclared function 'MUX_HWV'` | Mapped `MUX_HWV` to 6.18 `MUX_GATE_HWV_FENC_CLR_SET_UPD_FLAGS` with `mtk_mux_gate_hwv_fenc_clr_set_upd_ops`. |
 | `drivers/clk/mediatek/clk-mtk.h` | `use of undeclared identifier 'CLK_USE_HW_VOTER'` | Defined `CLK_USE_HW_VOTER 0` as upstream CCF handles voting in 6.18. |
 | `drivers/clk/mediatek/clk-mt6983.c` | `array has incomplete element type 'const struct mtk_pll_data'` | `struct mtk_pll_data`, `HAVE_RST_BAR`, and `PLL_AO` moved to `clk-pll.h` in 6.18. Added `#include "clk-pll.h"` and simplified `PLL_HV` to wrap `PLL`. |
+| `common/arch/arm64/configs/vitamin_gki.fragment` | `check_defconfig` mismatches: `CONFIG_RUST`, `CONFIG_GENDWARFKSYMS`, `CONFIG_ASHMEM`, `CONFIG_ANDROID_BINDER_IPC_RUST`, `CONFIG_RUST_INLINE_HELPERS`, `CONFIG_DM_VERITY_AVB`, `CONFIG_EROFS_FS_ZIP_LZ4`, `CONFIG_USB_CONFIGFS_F_ACC`, `CONFIG_OPLUS_CHG`, `CONFIG_OPLUS_CHG_V2`, `CONFIG_UFF_FINGERPRINT` | Thin LTO (`CONFIG_LTO_CLANG_THIN=y`) forced `CONFIG_GENDWARFKSYMS` off, cascading into disabled `CONFIG_RUST` and dependent Rust modules. Obsolete and out-of-tree symbols also failed `check_defconfig`. Aligned fragment with 6.18 ACK standards by removing LTO overrides and obsolete/out-of-tree symbols. |
+| `common/BUILD.bazel` | `KernelBuild` error: `The following kernel modules are built but not copied. Add these lines to the module_outs attribute of @@//common:vitamin` | In-tree modules built by `kernel_build` were not declared in `module_outs`. Defined `_VITAMIN_MODULE_OUTS` with the complete list of 126 in-tree modules and wired `module_outs = _VITAMIN_MODULE_OUTS` to `:vitamin` and `:vitamin_debug`. |
 
 ---
 
