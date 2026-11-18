@@ -16,6 +16,7 @@
 #include "clk-mtk.h"
 #include "clk-mux.h"
 #include "clk-gate.h"
+#include "clk-pll.h"
 
 #include <dt-bindings/clock/mt6983-clk.h>
 
@@ -2840,35 +2841,14 @@ static struct mtk_gate top_clks[] = {
 			_pwr_reg, _flags, _rst_bar_mask,		\
 			_pd_reg, _pd_shift, _tuner_reg,			\
 			_tuner_en_reg, _tuner_en_bit,			\
-			_pcw_reg, _pcw_shift, _pcwbits,	\
+			_pcw_reg, _pcw_shift, _pcwbits,			\
 			_hwv_set_ofs, _hwv_clr_ofs, _hwv_sta_ofs,	\
-			_hwv_done_ofs, _hwv_shift) {		\
-		.id = _id,						\
-		.name = _name,						\
-		.reg = _reg,						\
-		.en_reg = _en_reg,					\
-		.en_mask = _div_en_msk,					\
-		.pll_en_bit = _pll_en_bit,				\
-		.pwr_reg = _pwr_reg,					\
-		.flags = (_flags | PLL_CFLAGS | CLK_USE_HW_VOTER),	\
-		.rst_bar_mask = _rst_bar_mask,				\
-		.fmax = PLL_FMAX,					\
-		.fmin = PLL_FMIN,					\
-		.pd_reg = _pd_reg,					\
-		.pd_shift = _pd_shift,					\
-		.tuner_reg = _tuner_reg,				\
-		.tuner_en_reg = _tuner_en_reg,				\
-		.tuner_en_bit = _tuner_en_bit,				\
-		.pcw_reg = _pcw_reg,					\
-		.pcw_shift = _pcw_shift,				\
-		.pcwbits = _pcwbits,					\
-		.pcwibits = PLL_INTEGER_BITS,				\
-		.hwv_set_ofs = _hwv_set_ofs,	\
-		.hwv_clr_ofs = _hwv_clr_ofs,	\
-		.hwv_sta_ofs = _hwv_sta_ofs,	\
-		.hwv_done_ofs = _hwv_done_ofs,	\
-		.hwv_shift = _hwv_shift,	\
-	}
+			_hwv_done_ofs, _hwv_shift)			\
+		PLL(_id, _name, _reg, _en_reg, _div_en_msk, _pll_en_bit,	\
+			_pwr_reg, _flags, _rst_bar_mask,		\
+			_pd_reg, _pd_shift, _tuner_reg,			\
+			_tuner_en_reg, _tuner_en_bit,			\
+			_pcw_reg, _pcw_shift, _pcwbits)
 
 static const struct mtk_pll_data apmixedsys_plls[] = {
 	PLL(CLK_APMIXEDSYS_MAINPLL /* dts */,
