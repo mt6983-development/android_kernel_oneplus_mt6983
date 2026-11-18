@@ -1480,32 +1480,10 @@ static const unsigned int mt6983_pull_type[] = {
 	1 /* 230 */, 1 /* 231 */, 1 /* 232 */, 1 /* 233 */,
 };
 
-static const struct mtk_eh_pin_pinmux mt6983_eh_pin_pinmux_list[] = {
-	/* pin number, pinmux number */
-	{70, 3},
-	{71, 3},
-	{72, 3},
-	{73, 3},
-	{78, 1},
-	{79, 1},
-	{80, 1},
-	{81, 1},
-	{82, 1},
-	{83, 1},
-	{173, 1},
-	{174, 1},
-	{175, 1},
-	{176, 1},
-	{177, 1},
-	{178, 1},
-	{179, 1},
-	{180, 1},
-	{181, 1},
-	{182, 1},
-	{183, 1},
-	{184, 1},
-	{185, 1},
-	{186, 1},
+static const char * const mt6983_pinctrl_register_base_names[] = {
+	"gpio", "iocfg_rm", "iocfg_rt", "iocfg_rmm", "iocfg_bl",
+	"iocfg_bm", "iocfg_br", "iocfg_brr", "iocfg_lb", "iocfg_lm",
+	"iocfg_rtt", "iocfg_tr", "iocfg_tl", "iocfg_lt",
 };
 
 static const struct mtk_pin_reg_calc mt6983_reg_cals[PINCTRL_PIN_REG_MAX] = {
@@ -1522,7 +1500,7 @@ static const struct mtk_pin_reg_calc mt6983_reg_cals[PINCTRL_PIN_REG_MAX] = {
 	[PINCTRL_PIN_REG_PUPD] = MTK_RANGE(mt6983_pin_pupd_range),
 	[PINCTRL_PIN_REG_R0] = MTK_RANGE(mt6983_pin_r0_range),
 	[PINCTRL_PIN_REG_R1] = MTK_RANGE(mt6983_pin_r1_range),
-	[PINCTRL_PIN_REG_DRV_EH] = MTK_RANGE(mt6983_pin_eh_range),
+	[PINCTRL_PIN_REG_DRV_ADV] = MTK_RANGE(mt6983_pin_eh_range),
 	[PINCTRL_PIN_REG_RSEL] = MTK_RANGE(mt6983_pin_rsel_range),
 };
 
@@ -1533,15 +1511,15 @@ static const struct mtk_pin_soc mt6983_data = {
 	.ngrps = ARRAY_SIZE(mtk_pins_mt6983),
 	.nfuncs = 8,
 	.gpio_m = 0,
-	.capability_flags = FLAG_RACE_FREE_ACCESS
-				| FLAG_DRIVE_SET_RAW,
+	.base_names = mt6983_pinctrl_register_base_names,
+	.nbase_names = ARRAY_SIZE(mt6983_pinctrl_register_base_names),
 	.pull_type = mt6983_pull_type,
-	.eh_pin_pinmux = mt6983_eh_pin_pinmux_list,
-	.neh_pins = ARRAY_SIZE(mt6983_eh_pin_pinmux_list),
 	.bias_set_combo = mtk_pinconf_bias_set_combo,
 	.bias_get_combo = mtk_pinconf_bias_get_combo,
-	.adv_drive_get = mtk_pinconf_adv_drive_get,
-	.adv_drive_set = mtk_pinconf_adv_drive_set,
+	.drive_set = mtk_pinconf_drive_set_rev1,
+	.drive_get = mtk_pinconf_drive_get_rev1,
+	.adv_drive_get = mtk_pinconf_adv_drive_get_raw,
+	.adv_drive_set = mtk_pinconf_adv_drive_set_raw,
 };
 
 static const struct of_device_id mt6983_pinctrl_of_match[] = {
