@@ -71,6 +71,12 @@ If using a full AOSP workspace with Kleaf:
 
 > **Note:** Kleaf `*_dist` targets are `pkg_install` executable rules. Use `tools/bazel run` to execute the installer and stage files into `out/.../dist/`. (Using `tools/bazel build` only compiles into `bazel-bin/` without copying out).
 
+### `--config=fast` Flag Details (Kleaf Configuration)
+The `--config=fast` option is defined in `build/kernel/kleaf/bazelrc/fast.bazelrc` and sets:
+- `--@kleaf//build/kernel/kleaf:config_fast`: Signals Kleaf rules to enable optimizations for developer turnaround.
+- `--config=local`: Inherits from `build/kernel/kleaf/bazelrc/local.bazelrc`, setting `--@kleaf//build/kernel/kleaf:config_local` and `--strategy=KernelModuleProcessWrapperSandbox=processwrapper-sandbox`. This minimizes Bazel action sandboxing overhead to maximize local build performance.
+- **LTO Mode:** In ACK 6.18 Kleaf, the legacy `--lto` flag is deprecated/no-op; LTO mode is dictated directly by Kconfig. For `vitamin`, `arch/arm64/configs/vitamin_gki.fragment` configures `CONFIG_LTO_CLANG=y` and `CONFIG_LTO_CLANG_THIN=y` (ThinLTO), which is preserved during fast builds.
+
 1. **OnePlus Nord 3 (vitamin) Release Distribution:**
    Builds the kernel Image with `vitamin_gki.fragment`, MT6983 base DTB, OnePlus Nord 3 board DTBO, and modules:
    ```bash
