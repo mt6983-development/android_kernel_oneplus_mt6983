@@ -49,6 +49,24 @@
 			__VA_ARGS__, { } },				\
 	}
 
+#define MTK_PIN_NODRV(_number, _name, _eint, ...) {	\
+		.number = _number,			\
+		.name = _name,				\
+		.eint = _eint,				\
+		.funcs = (struct mtk_func_desc[]){	\
+			__VA_ARGS__, { } },		\
+	}
+
+#ifndef EINT_NO_GPIO
+#define EINT_NO_GPIO 9999
+#endif
+
+#define MTK_PIN_EINT(_number, _eint) {			\
+		.number = _number,			\
+		.name = "GPIO"#_number,			\
+		.eint = MTK_EINT_FUNCTION(EINT_NO_GPIO, _eint),	\
+	}
+
 #define MTK_EINT_PIN(_number, _instance, _index, _debounce) {	\
 		.number = _number,				\
 		.instance = _instance,				\
