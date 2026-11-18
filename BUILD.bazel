@@ -1351,6 +1351,120 @@ pkg_install(
     destdir = "out/yukawa/dist",
 )
 
+_VITAMIN_OUTS = [
+    "Image",
+    "System.map",
+    "arch/arm64/boot/dts/mediatek/mt6983.dtb",
+    "arch/arm64/boot/dts/mediatek/oplus6983_22823.dtbo",
+    "modules.builtin",
+    "modules.builtin.modinfo",
+    "vmlinux",
+    "vmlinux.symvers",
+]
+
+_VITAMIN_MAKE_GOALS = [
+    "Image",
+    "mediatek/mt6983.dtb",
+    "mediatek/oplus6983_22823.dtbo",
+    "modules",
+]
+
+kernel_build(
+    name = "vitamin",
+    srcs = [":kernel_aarch64_sources"],
+    outs = _VITAMIN_OUTS,
+    arch = "arm64",
+    defconfig = "arch/arm64/configs/gki_defconfig",
+    generate_out_targets = True,
+    kmi_symbol_list_strict_mode = False,
+    make_goals = _VITAMIN_MAKE_GOALS,
+    makefile = ":Makefile",
+    pre_defconfig_fragments = ["arch/arm64/configs/vitamin_gki.fragment"],
+    strip_modules = select({
+        "//build/kernel/kleaf:debug_is_true": False,
+        "//conditions:default": True,
+    }),
+    visibility = ["//visibility:public"],
+)
+
+kernel_modules_install(
+    name = "vitamin_modules_install",
+    kernel_build = ":vitamin",
+)
+
+merged_kernel_uapi_headers(
+    name = "vitamin_merged_kernel_uapi_headers",
+    kernel_build = ":vitamin",
+)
+
+pkg_files(
+    name = "vitamin_dist_files",
+    srcs = [
+        ":vitamin",
+        ":vitamin_modules_install",
+        ":vitamin_merged_kernel_uapi_headers",
+    ],
+    strip_prefix = strip_prefix.files_only(),
+    visibility = ["//visibility:private"],
+)
+
+pkg_install(
+    name = "vitamin_dist",
+    srcs = [":vitamin_dist_files"],
+    destdir = "out/vitamin/dist",
+)
+
+kernel_build(
+    name = "vitamin_debug",
+    srcs = [":kernel_aarch64_sources"],
+    outs = _VITAMIN_OUTS,
+    arch = "arm64",
+    defconfig = "arch/arm64/configs/gki_defconfig",
+    generate_out_targets = True,
+    kmi_symbol_list_strict_mode = False,
+    make_goals = _VITAMIN_MAKE_GOALS,
+    makefile = ":Makefile",
+    pre_defconfig_fragments = [
+        "arch/arm64/configs/vitamin_gki.fragment",
+        "arch/arm64/configs/vitamin_debug.config",
+    ],
+    strip_modules = False,
+    visibility = ["//visibility:public"],
+)
+
+kernel_modules_install(
+    name = "vitamin_debug_modules_install",
+    kernel_build = ":vitamin_debug",
+)
+
+pkg_files(
+    name = "vitamin_debug_dist_files",
+    srcs = [
+        ":vitamin_debug",
+        ":vitamin_debug_modules_install",
+    ],
+    strip_prefix = strip_prefix.files_only(),
+    visibility = ["//visibility:private"],
+)
+
+pkg_install(
+    name = "vitamin_debug_dist",
+    srcs = [":vitamin_debug_dist_files"],
+    destdir = "out/vitamin_debug/dist",
+)
+
+alias(
+    name = "kernel_aarch64_vitamin",
+    actual = ":vitamin",
+    visibility = ["//visibility:public"],
+)
+
+alias(
+    name = "kernel_aarch64_vitamin_dist",
+    actual = ":vitamin_dist",
+    visibility = ["//visibility:public"],
+)
+
 kernel_build(
     name = "fips140",
     outs = [],
