@@ -116,7 +116,7 @@ DTC_FLAGS += $(if $(filter $(patsubst $(obj)/%,%,$@), $(base-dtb-y)), -@)
 
 # ANDROID: Allow DTC_INCLUDE to be set by the BUILD_CONFIG. This allows one to
 # compile an out-of-tree device tree.
-DTC_INCLUDE += $(srctree)/scripts/dtc/include-prefixes $(srctree)/arch/$(SRCARCH)/boot/dts
+DTC_INCLUDE += $(srctree)/scripts/dtc/include-prefixes $(srctree)/arch/$(SRCARCH)/boot/dts $(srctree)/arch/$(SRCARCH)/boot/dts/mediatek
 
 
 dtc_cpp_flags = -Wp,-MMD,$(depfile).pre.tmp -nostdinc $(addprefix -I,$(DTC_INCLUDE)) -undef -D__DTS__
