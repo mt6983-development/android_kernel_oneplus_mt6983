@@ -21,6 +21,8 @@
 #define MHZ (1000 * 1000)
 
 #define MTK_WAIT_HWV_DONE_US	30
+#define CLK_USE_HW_VOTER	0
+
 
 struct platform_device;
 
